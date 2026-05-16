@@ -1,51 +1,38 @@
 <x-admin-layout>
-    <x-slot name="header">
-        Edit Navigation Item
-    </x-slot>
+    <x-slot name="header">Edit Navigation Item</x-slot>
 
-    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-6">
             <form action="{{ route('navigations.update', $navigation) }}" method="POST">
-                @csrf
-                @method('PUT')
+                @csrf @method('PUT')
 
-                <div class="mb-4">
-                    <label for="label" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Label</label>
-                    <input type="text" name="label" id="label" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('label', $navigation->label) }}" required>
-                    @error('label')
-                        <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
-                    @enderror
+                <div class="mb-5">
+                    <label for="label" class="block mb-2 text-sm font-medium text-gray-700">Label</label>
+                    <input type="text" name="label" id="label" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" value="{{ old('label', $navigation->label) }}" required>
+                    @error('label') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="mb-4">
-                    <label for="url" class="block text-sm font-medium text-gray-700 dark:text-gray-300">URL</label>
-                    <input type="text" name="url" id="url" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('url', $navigation->url) }}" required placeholder="https://example.com or /about">
-                    @error('url')
-                        <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
-                    @enderror
+                <div class="mb-5">
+                    <label for="url" class="block mb-2 text-sm font-medium text-gray-700">URL</label>
+                    <input type="text" name="url" id="url" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" value="{{ old('url', $navigation->url) }}" required placeholder="https://example.com or /about">
+                    @error('url') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="mb-4">
-                    <label for="position" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Position</label>
+                <div class="mb-5">
+                    <label for="position" class="block mb-2 text-sm font-medium text-gray-700">Position</label>
                     <x-select name="position" :options="['header' => 'Header', 'footer' => 'Footer']" selected="{{ old('position', $navigation->position) }}" />
-                    @error('position')
-                        <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
-                    @enderror
+                    @error('position') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="mb-4">
-                    <label for="order" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Order (Lower numbers appear first)</label>
-                    <input type="number" name="order" id="order" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('order', $navigation->order) }}" required min="0">
-                    @error('order')
-                        <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
-                    @enderror
+                <div class="mb-5">
+                    <label for="order" class="block mb-2 text-sm font-medium text-gray-700">Order (Lower numbers appear first)</label>
+                    <input type="number" name="order" id="order" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" value="{{ old('order', $navigation->order) }}" required min="0">
+                    @error('order') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="flex items-center gap-4 mt-6">
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors">
-                        Update
-                    </button>
-                    <a href="{{ route('navigations.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">Cancel</a>
+                <div class="flex items-center gap-3 mt-6">
+                    <button type="submit" class="px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-hover transition-colors">Update</button>
+                    <a href="{{ route('navigations.index') }}" class="px-5 py-2.5 text-gray-600 bg-white border border-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">Cancel</a>
                 </div>
             </form>
         </div>

@@ -1,43 +1,31 @@
 <x-admin-layout>
-    <x-slot name="header">
-        Edit Gallery
-    </x-slot>
+    <x-slot name="header">Edit Gallery</x-slot>
 
-    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-6">
             <form action="{{ route('galleries.update', $gallery) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
+                @csrf @method('PUT')
 
-                <div class="mb-4">
-                    <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
-                    <input type="text" name="title" id="title" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{ old('title', $gallery->title) }}">
-                    @error('title')
-                        <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
-                    @enderror
+                <div class="mb-5">
+                    <label for="title" class="block mb-2 text-sm font-medium text-gray-700">Title</label>
+                    <input type="text" name="title" id="title" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" value="{{ old('title', $gallery->title) }}">
+                    @error('title') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="mb-4">
-                    <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image (Drop new image to replace current)</label>
-                    <x-file-upload name="image" currentImage="{{ $gallery->image }}" />
-                    @error('image')
-                        <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
-                    @enderror
+                <div class="mb-5">
+                    <x-file-upload name="image" currentImage="{{ $gallery->image }}" label="Image" />
+                    @error('image') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="mb-4">
-                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                    <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">{{ old('description', $gallery->description) }}</textarea>
-                    @error('description')
-                        <p class="text-sm text-red-600 mt-2">{{ $message }}</p>
-                    @enderror
+                <div class="mb-5">
+                    <label for="description" class="block mb-2 text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" id="description" rows="4" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">{{ old('description', $gallery->description) }}</textarea>
+                    @error('description') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="flex items-center gap-4 mt-6">
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors">
-                        Update
-                    </button>
-                    <a href="{{ route('galleries.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">Cancel</a>
+                <div class="flex items-center gap-3 mt-6">
+                    <button type="submit" class="px-5 py-2.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary-hover transition-colors">Update</button>
+                    <a href="{{ route('galleries.index') }}" class="px-5 py-2.5 text-gray-600 bg-white border border-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">Cancel</a>
                 </div>
             </form>
         </div>
