@@ -139,15 +139,19 @@ section:nth-child(even) {
     z-index: 1000;
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--clr-border);
     height: var(--navbar-h);
     display: flex;
     align-items: center;
-    transition: var(--transition);
+    transition: background 0.3s ease, box-shadow 0.3s ease,
+        border-color 0.3s ease;
 }
-/* .navbar.scrolled {
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95);
     box-shadow: var(--shadow-md);
-} */
+    border-bottom-color: transparent;
+}
 .navbar .container {
     display: flex;
     align-items: center;
@@ -160,17 +164,19 @@ section:nth-child(even) {
     display: flex;
     align-items: center;
     gap: 8px;
+    position: relative;
+    z-index: 2;
 }
 .navbar-brand span {
     color: var(--clr-primary);
 }
-
 .navbar-brand img {
     width: 48px;
     height: 48px;
     object-fit: cover;
 }
 
+/* Desktop nav links */
 .navbar-nav {
     display: flex;
     gap: 4px;
@@ -181,26 +187,88 @@ section:nth-child(even) {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--clr-text-muted);
-    transition: var(--transition);
+    transition: color 0.25s ease, background 0.25s ease;
+    position: relative;
 }
-.navbar-nav a:hover,
-.navbar-nav a.active {
+.navbar-nav a:hover {
     color: var(--clr-primary);
     background: var(--clr-primary-light);
 }
+.navbar-nav a.active {
+    color: var(--clr-primary);
+    background: var(--clr-primary-light);
+    font-weight: 600;
+}
+
+/* Toggle button (Lucide icons) */
 .navbar-toggle {
     display: none;
-    flex-direction: column;
-    gap: 5px;
-    width: 28px;
-    padding: 4px 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--clr-border);
+    background: var(--clr-white);
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease,
+        box-shadow 0.25s ease;
+    position: relative;
+    z-index: 2;
+    padding: 0;
 }
-.navbar-toggle span {
-    display: block;
-    height: 2px;
-    background: var(--clr-text);
-    border-radius: 2px;
-    transition: var(--transition);
+.navbar-toggle:hover {
+    background: var(--clr-bg-alt);
+    border-color: var(--clr-border-dark);
+}
+.navbar-toggle:active {
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+    border-color: var(--clr-primary);
+}
+.navbar-toggle-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--clr-text);
+    transition: opacity 0.2s ease, transform 0.3s ease;
+    position: absolute;
+}
+.navbar-toggle-icon--open {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+.navbar-toggle-icon--close {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+.navbar-toggle.active .navbar-toggle-icon--open {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+.navbar-toggle.active .navbar-toggle-icon--close {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+/* Mobile overlay */
+.navbar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.navbar-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Body scroll lock when nav is open */
+body.nav-open {
+    overflow: hidden;
 }
 
 /* --- Hero --- */
@@ -392,6 +460,7 @@ section:nth-child(even) {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    padding: 24px;
 }
 
 .project-card:hover {
@@ -402,22 +471,15 @@ section:nth-child(even) {
 
 .project-card-thumb {
     width: 100%;
-    height: 200px;
+    height: 180px;
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
     overflow: hidden;
     background: linear-gradient(135deg, var(--clr-primary-light), #dbeafe);
     position: relative;
 }
-.project-card-thumb::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.45);
-    transition: var(--transition);
-    z-index: 1;
-}
-.project-card:hover .project-card-thumb::after {
-    opacity: 0;
-}
+
 .project-card-thumb img {
     width: 100%;
     height: 100%;
@@ -437,7 +499,7 @@ section:nth-child(even) {
     opacity: 0.5;
 }
 .project-card-body {
-    padding: 20px 24px 24px;
+    padding: 20px 0 0;
 }
 .project-card-meta {
     display: flex;
@@ -1197,17 +1259,57 @@ section:nth-child(even) {
         top: var(--navbar-h);
         left: 0;
         right: 0;
-        background: var(--clr-white);
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border-bottom: 1px solid var(--clr-border);
         flex-direction: column;
-        padding: 16px;
-        gap: 4px;
-        transform: translateY(-130%);
-        transition: var(--transition);
+        padding: 12px 24px 20px;
+        gap: 2px;
+        transform: translateY(-120%);
+        opacity: 0;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+            opacity 0.3s ease;
         box-shadow: var(--shadow-lg);
+        z-index: 999;
     }
     .navbar-nav.open {
         transform: translateY(0);
+        opacity: 1;
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+    .navbar-nav a {
+        padding: 12px 16px;
+        border-radius: var(--radius-md);
+        font-size: 0.95rem;
+        font-weight: 500;
+        width: 100%;
+        transform: translateY(-8px);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.25s ease, color 0.25s ease,
+            background 0.25s ease;
+    }
+    .navbar-nav.open a {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    .navbar-nav.open a:nth-child(1) {
+        transition-delay: 0.05s;
+    }
+    .navbar-nav.open a:nth-child(2) {
+        transition-delay: 0.1s;
+    }
+    .navbar-nav.open a:nth-child(3) {
+        transition-delay: 0.15s;
+    }
+    .navbar-nav.open a:nth-child(4) {
+        transition-delay: 0.2s;
+    }
+    .navbar-nav.open a:nth-child(5) {
+        transition-delay: 0.25s;
+    }
+    .navbar-nav.open a:nth-child(6) {
+        transition-delay: 0.3s;
     }
     .navbar-toggle {
         display: flex;
