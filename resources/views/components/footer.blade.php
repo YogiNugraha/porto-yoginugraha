@@ -5,27 +5,40 @@
             <div class="footer-brand">
                 <div class="footer-brand-header">
                     <img src="{{ asset('images/logo.png') }}" alt="">
-                    <h3>Yogi Nugraha</h3>
+                    <h3>{{ \App\Models\Setting::where('key', 'hero_name')->value('value') ?? 'Yogi Nugraha' }}</h3>
                 </div>
-                <p>Result-oriented Web Developer yang fokus membangun solusi digital modern, scalable, dan berdampak.
+                <p>{{ \App\Models\Setting::where('key', 'hero_subtitle')->value('value') ?? 'Result-oriented Web Developer yang fokus membangun solusi digital modern, scalable, dan berdampak.' }}
                 </p>
             </div>
 
             <div class="footer-col">
                 <h4>Navigasi</h4>
-                <a href="#hero">Beranda</a>
-                <a href="#karya">Karya</a>
-                <a href="#tentang">Tentang</a>
-                {{-- <a href="#blog">Blog Post</a> --}}
+                @php
+                    $footerNavs = \App\Models\Navigation::where('position', 'footer')->orderBy('order')->get();
+                @endphp
+                @if($footerNavs->count() > 0)
+                    @foreach($footerNavs as $nav)
+                        <a href="{{ $nav->url }}">{{ $nav->label }}</a>
+                    @endforeach
+                @else
+                    <a href="#hero">Beranda</a>
+                    <a href="#karya">Karya</a>
+                    <a href="#tentang">Tentang</a>
+                    <a href="#blog">Blog Post</a>
+                    <a href="#galeri">Galeri</a>
+                    <a href="#ekosistem">Tech Stack</a>
+                    <a href="#kontak">Kontak</a>
+                @endif
             </div>
 
+            {{-- 
             <div class="footer-col">
                 <h4>Lainnya</h4>
-                {{-- <a href="#galeri">Galeri</a> --}}
+                <a href="#galeri">Galeri</a>
                 <a href="#ekosistem">Tech Stack</a>
-                {{-- <a href="#mitra">Mitra</a> --}}
                 <a href="#kontak">Kontak</a>
-            </div>
+            </div> 
+            --}}
 
             <div class="footer-col">
                 <h4>Sosial</h4>

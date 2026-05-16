@@ -22,7 +22,12 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/bs995i9gaolyzqy38eul5dpeg1kfga1xgtz6a25mfecsxhf5/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <style>
+        .tox-notifications-container {
+            display: none !important;
+        }
+    </style>
 </head>
 <body x-data x-init="setTimeout(() => $el.classList.add('transition-colors', 'duration-200'), 50)" class="admin-panel font-sans antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
     <div class="flex h-screen overflow-hidden">

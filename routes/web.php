@@ -4,7 +4,11 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
+    $posts = \App\Models\Post::where('is_published', true)->orderBy('created_at', 'desc')->take(3)->get();
+    $galleries = \App\Models\Gallery::orderBy('created_at', 'desc')->take(6)->get();
+
+    return view('welcome', compact('settings', 'posts', 'galleries'));
 });
 
 Route::get('/projects', function () {
@@ -14,6 +18,11 @@ Route::get('/projects', function () {
 Route::get('/projects/{slug}', function (string $slug) {
     return view('projects.show', ['slug' => $slug]);
 })->name('projects.show');
+
+Route::get('/blog/{slug}', function (string $slug) {
+    $post = \App\Models\Post::where('slug', $slug)->where('is_published', true)->firstOrFail();
+    return view('blog.show', compact('post'));
+})->name('blog.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

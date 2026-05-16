@@ -5,13 +5,22 @@
             <img src="{{ asset('images/logo.png') }}" alt="Yogi Nugraha Logo"> Yogi Nugraha
         </a>
 
+        @php
+            $navigations = \App\Models\Navigation::where('position', 'header')->orderBy('order')->get();
+        @endphp
         <div class="navbar-nav" id="navbarNav">
-            <a href="#hero">Beranda</a>
-            <a href="#karya">Karya</a>
-            <a href="#tentang">Tentang</a>
-            {{-- <a href="#blog">Blog Post</a>
-            <a href="#galeri">Galeri</a> --}}
-            <a href="#kontak">Kontak</a>
+            @if($navigations->count() > 0)
+                @foreach($navigations as $nav)
+                    <a href="{{ $nav->url }}">{{ $nav->label }}</a>
+                @endforeach
+            @else
+                <a href="#hero">Beranda</a>
+                <a href="#karya">Karya</a>
+                <a href="#tentang">Tentang</a>
+                <a href="#blog">Blog Post</a>
+                <a href="#galeri">Galeri</a>
+                <a href="#kontak">Kontak</a>
+            @endif
         </div>
 
         <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation" aria-expanded="false">

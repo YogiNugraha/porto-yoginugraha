@@ -1,3 +1,4 @@
+@props(['posts' => []])
 {{-- Recent Blog Posts --}}
 <section id="blog">
     <div class="container">
@@ -9,73 +10,29 @@
 
         <div class="swiper blog-swiper">
             <div class="swiper-wrapper">
-                {{-- Post 1 --}}
+                @forelse($posts as $post)
                 <div class="swiper-slide">
                     <div class="blog-card">
                         <div class="blog-card-img">
-                            <i data-lucide="code-2" style="width:48px;height:48px"></i>
+                            @if($post->image)
+                                <img src="{{ asset('storage/' . $post->image) }}" alt="{{ $post->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                <i data-lucide="file-text" style="width:48px;height:48px"></i>
+                            @endif
                         </div>
                         <div class="blog-card-body">
-                            <div class="blog-card-date">12 Mei 2025</div>
-                            <h3>Membangun REST API Scalable dengan Laravel 12</h3>
-                            <p>Best practices dalam mendesain API yang clean, testable, dan siap untuk production-level traffic.</p>
-                            <a href="#" class="blog-card-link">
+                            <div class="blog-card-date">{{ $post->created_at->format('d M Y') }}</div>
+                            <h3>{{ $post->title }}</h3>
+                            <p>{{ Str::limit(strip_tags($post->content), 100) }}</p>
+                            <a href="{{ route('blog.show', $post->slug) }}" class="blog-card-link">
                                 Read More <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
                             </a>
                         </div>
                     </div>
                 </div>
-
-                {{-- Post 2 --}}
-                <div class="swiper-slide">
-                    <div class="blog-card">
-                        <div class="blog-card-img">
-                            <i data-lucide="layout-dashboard" style="width:48px;height:48px"></i>
-                        </div>
-                        <div class="blog-card-body">
-                            <div class="blog-card-date">28 Apr 2025</div>
-                            <h3>Panduan Lengkap Blade Components di Laravel</h3>
-                            <p>Cara memanfaatkan komponen Blade untuk membangun UI yang reusable dan maintainable.</p>
-                            <a href="#" class="blog-card-link">
-                                Read More <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Post 3 --}}
-                <div class="swiper-slide">
-                    <div class="blog-card">
-                        <div class="blog-card-img">
-                            <i data-lucide="git-branch" style="width:48px;height:48px"></i>
-                        </div>
-                        <div class="blog-card-body">
-                            <div class="blog-card-date">15 Apr 2025</div>
-                            <h3>Git Workflow untuk Tim Developer Pemula</h3>
-                            <p>Strategi branching, commit conventions, dan code review yang efektif untuk kolaborasi tim.</p>
-                            <a href="#" class="blog-card-link">
-                                Read More <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Post 4 --}}
-                <div class="swiper-slide">
-                    <div class="blog-card">
-                        <div class="blog-card-img">
-                            <i data-lucide="database" style="width:48px;height:48px"></i>
-                        </div>
-                        <div class="blog-card-body">
-                            <div class="blog-card-date">02 Apr 2025</div>
-                            <h3>Optimasi Database Query di Aplikasi Laravel</h3>
-                            <p>Teknik indexing, eager loading, dan caching untuk meningkatkan performa query secara signifikan.</p>
-                            <a href="#" class="blog-card-link">
-                                Read More <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                @empty
+                    <p class="text-center" style="width: 100%; color: var(--text-muted);">Belum ada postingan blog.</p>
+                @endforelse
             </div>
             <div class="swiper-pagination"></div>
         </div>

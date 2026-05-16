@@ -1,3 +1,4 @@
+@props(['galleries' => []])
 {{-- Gallery Kegiatan --}}
 <section id="galeri">
     <div class="container">
@@ -10,24 +11,34 @@
 
     <div class="gallery-marquee">
         <div class="gallery-track">
-            @for ($i = 1; $i <= 10; $i++)
-            <div class="gallery-item">
-                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--clr-text-light);font-size:.8rem">
-                    <i data-lucide="image" style="width:32px;height:32px;color:var(--clr-border-dark)"></i>
-                    Kegiatan {{ $i }}
+            @if(count($galleries) > 0)
+                @foreach ($galleries as $gallery)
+                <div class="gallery-item" style="padding: 0; overflow: hidden; position: relative;">
+                    <img src="{{ asset('storage/' . $gallery->image) }}" alt="{{ $gallery->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    @if($gallery->title)
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: white; padding: 8px; text-align: center; font-size: 0.8rem; backdrop-filter: blur(4px);">
+                        {{ $gallery->title }}
+                    </div>
+                    @endif
                 </div>
-            </div>
-            @endfor
+                @endforeach
 
-            {{-- Duplicate for infinite loop --}}
-            @for ($i = 1; $i <= 10; $i++)
-            <div class="gallery-item">
-                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--clr-text-light);font-size:.8rem">
-                    <i data-lucide="image" style="width:32px;height:32px;color:var(--clr-border-dark)"></i>
-                    Kegiatan {{ $i }}
+                {{-- Duplicate for infinite loop --}}
+                @foreach ($galleries as $gallery)
+                <div class="gallery-item" style="padding: 0; overflow: hidden; position: relative;">
+                    <img src="{{ asset('storage/' . $gallery->image) }}" alt="{{ $gallery->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    @if($gallery->title)
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: white; padding: 8px; text-align: center; font-size: 0.8rem; backdrop-filter: blur(4px);">
+                        {{ $gallery->title }}
+                    </div>
+                    @endif
                 </div>
-            </div>
-            @endfor
+                @endforeach
+            @else
+                <div style="width: 100%; text-align: center; padding: 2rem; color: var(--text-muted);">
+                    Belum ada foto galeri.
+                </div>
+            @endif
         </div>
     </div>
 </section>
