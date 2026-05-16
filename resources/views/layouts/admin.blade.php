@@ -114,7 +114,7 @@
                 <div class="flex items-center gap-4">
                     <a href="{{ url('/') }}" target="_blank" class="text-sm text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400">View Site</a>
                     <!-- Dark Mode Toggle -->
-                    <button @click="darkMode = !darkMode" class="p-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 focus:outline-none">
+                    <button @click="darkMode = !darkMode; $dispatch('dark-mode-toggled', darkMode)" class="p-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 focus:outline-none">
                         <!-- Sun icon -->
                         <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         <!-- Moon icon -->
@@ -156,29 +156,45 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            if (document.querySelector('.wysiwyg-editor')) {
-                tinymce.init({
-                    selector: '.wysiwyg-editor',
-                    plugins: 'advlist autolink lists link image charmap preview anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking table emoticons template help',
-                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                    height: 500,
-                    menubar: false,
-                    skin: localStorage.getItem('darkMode') === 'true' ? 'oxide-dark' : 'oxide',
-                    content_css: localStorage.getItem('darkMode') === 'true' ? 'dark' : 'default',
-                    setup: function(editor) {
-                        editor.on('change', function() {
-                            tinymce.triggerSave();
-                        });
-                    }
-                });
-
-                // Listen to AlpineJS dark mode toggle to update TinyMCE skin
-                window.addEventListener('storage', function(e) {
-                    if (e.key === 'darkMode') {
-                        location.reload(); // Simple reload to apply TinyMCE dark mode
-                    }
-                });
+            function initTinyMCE(isDark) {
+                if (document.querySelector('.wysiwyg-editor')) {
+                    tinymce.init({
+                        selector: '.wysiwyg-editor',
+                        plugins: 'advlist autolink lists link image charmap preview anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking table emoticons template help',
+                        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                        height: 500,
+                        menubar: false,
+                        skin: isDark ? 'oxide-dark' : 'oxide',
+                        content_css: isDark ? 'dark' : 'default',
+                        setup: function(editor) {
+                            editor.on('change', function() {
+                                tinymce.triggerSave();
+                            });
+                        }
+                    });
+                }
             }
+
+            // Initial load
+            initTinyMCE(localStorage.getItem('darkMode') === 'true');
+
+            // Listen to AlpineJS dark mode toggle to update TinyMCE skin
+            window.addEventListener('dark-mode-toggled', function(e) {
+                if (document.querySelector('.wysiwyg-editor')) {
+                    // Save content before destroying
+                    tinymce.triggerSave();
+                    
+                    // Prevent flickering and layout shift by making the raw textarea invisible but keeping its height
+                    document.querySelectorAll('.wysiwyg-editor').forEach(textarea => {
+                        textarea.style.height = '500px';
+                        textarea.style.visibility = 'hidden';
+                    });
+                    
+                    // Destroy and rebuild
+                    tinymce.remove('.wysiwyg-editor');
+                    initTinyMCE(e.detail);
+                }
+            });
         });
     </script>
 </body>

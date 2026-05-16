@@ -27,7 +27,18 @@ Route::get('/blog/{slug}', function (string $slug) {
 })->name('blog.show');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $stats = [
+        'posts' => \App\Models\Post::count(),
+        'projects' => \App\Models\Project::count(),
+        'galleries' => \App\Models\Gallery::count(),
+        'experiences' => \App\Models\Experience::count(),
+        'skills' => \App\Models\Skill::count(),
+    ];
+    
+    $recentPosts = \App\Models\Post::latest()->take(5)->get();
+    $recentProjects = \App\Models\Project::latest()->take(5)->get();
+
+    return view('dashboard', compact('stats', 'recentPosts', 'recentProjects'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
