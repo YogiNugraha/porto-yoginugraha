@@ -15,39 +15,39 @@
             @endphp
 
             @foreach($statItems as $stat)
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200 hover:shadow-md transition-shadow">
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-slate-200 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-sm font-medium text-gray-500">{{ $stat['label'] }}</h3>
-                        <div class="p-2 bg-primary-light rounded-lg text-primary">
+                        <h3 class="text-sm font-medium text-slate-500">{{ $stat['label'] }}</h3>
+                        <div class="p-2 bg-sky-50 rounded-lg text-sky-500">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $stat['icon'] }}"></path></svg>
                         </div>
                     </div>
-                    <div class="text-3xl font-bold text-gray-900">{{ $stat['count'] }}</div>
+                    <div class="text-3xl font-bold text-slate-900">{{ $stat['count'] }}</div>
                 </div>
             @endforeach
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <!-- Recent Projects -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-900">Recent Projects</h3>
-                    <a href="{{ route('projects.index') }}" class="text-sm text-primary hover:text-primary-hover font-medium">View all &rarr;</a>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-slate-900">Recent Projects</h3>
+                    <a href="{{ route('projects.index') }}" class="text-sm text-sky-500 hover:text-sky-600 font-medium">View all &rarr;</a>
                 </div>
-                <div class="divide-y divide-gray-100">
+                <div class="divide-y divide-slate-200">
                     @forelse($recentProjects as $project)
-                        <div class="p-4 px-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div class="p-4 px-6 flex items-center justify-between hover:bg-slate-50 transition-colors">
                             <div class="flex items-center gap-4">
                                 @if($project->image)
-                                    <img src="{{ Storage::url($project->image) }}" class="w-12 h-12 rounded-lg object-cover bg-gray-100 border border-gray-200" alt="{{ $project->title }}">
+                                    <img src="{{ Storage::url($project->image) }}" class="w-12 h-12 rounded-lg object-cover bg-slate-100 border border-slate-200" alt="{{ $project->title }}">
                                 @else
-                                    <div class="w-12 h-12 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400">
+                                    <div class="w-12 h-12 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                     </div>
                                 @endif
                                 <div>
-                                    <a href="{{ route('projects.edit', $project) }}" class="font-medium text-gray-900 hover:text-primary">{{ $project->title }}</a>
-                                    <p class="text-sm text-gray-500">{{ $project->category ?? 'Uncategorized' }}</p>
+                                    <a href="{{ route('projects.edit', $project) }}" class="font-medium text-slate-900 hover:text-sky-500">{{ $project->title }}</a>
+                                    <p class="text-sm text-slate-500">{{ $project->category ?? 'Uncategorized' }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2">
@@ -60,37 +60,37 @@
                                 @if($project->is_published)
                                     <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Published</span>
                                 @else
-                                    <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">Draft</span>
+                                    <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">Draft</span>
                                 @endif
                             </div>
                         </div>
                     @empty
-                        <div class="p-6 text-center text-gray-500">No projects found.</div>
+                        <div class="p-6 text-center text-slate-500">No projects found.</div>
                     @endforelse
                 </div>
             </div>
 
             <!-- Recent Posts -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-900">Recent Posts</h3>
-                    <a href="{{ route('posts.index') }}" class="text-sm text-primary hover:text-primary-hover font-medium">View all &rarr;</a>
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-slate-900">Recent Posts</h3>
+                    <a href="{{ route('posts.index') }}" class="text-sm text-sky-500 hover:text-sky-600 font-medium">View all &rarr;</a>
                 </div>
-                <div class="divide-y divide-gray-100">
+                <div class="divide-y divide-slate-200">
                     @forelse($recentPosts as $post)
-                        <div class="p-4 px-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                        <div class="p-4 px-6 flex items-center justify-between hover:bg-slate-50 transition-colors">
                             <div class="flex flex-col">
-                                <a href="{{ route('posts.edit', $post) }}" class="font-medium text-gray-900 hover:text-primary truncate max-w-xs">{{ $post->title }}</a>
-                                <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
+                                <a href="{{ route('posts.edit', $post) }}" class="font-medium text-slate-900 hover:text-sky-500 truncate max-w-xs">{{ $post->title }}</a>
+                                <p class="text-sm text-slate-500">{{ $post->created_at->diffForHumans() }}</p>
                             </div>
                             @if($post->is_published)
                                 <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Published</span>
                             @else
-                                <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">Draft</span>
+                                <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">Draft</span>
                             @endif
                         </div>
                     @empty
-                        <div class="p-6 text-center text-gray-500">No posts found.</div>
+                        <div class="p-6 text-center text-slate-500">No posts found.</div>
                     @endforelse
                 </div>
             </div>
