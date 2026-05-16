@@ -123,7 +123,7 @@
         </div>
 
         <div style="text-align:center">
-            <a href="{{ route('projects.index') }}" class="btn-outline">
+            <a href="{{ route('public.projects.index') }}" class="btn-outline">
                 Muat lebih banyak
                 <i data-lucide="arrow-right" style="width:16px;height:16px"></i>
             </a>

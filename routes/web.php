@@ -12,12 +12,14 @@ Route::get('/', function () {
 });
 
 Route::get('/projects', function () {
-    return view('projects.index');
-})->name('projects.index');
+    $projects = \App\Models\Project::where('is_published', true)->orderBy('order')->latest()->get();
+    return view('projects.index', compact('projects'));
+})->name('public.projects.index');
 
 Route::get('/projects/{slug}', function (string $slug) {
-    return view('projects.show', ['slug' => $slug]);
-})->name('projects.show');
+    $project = \App\Models\Project::where('slug', $slug)->where('is_published', true)->firstOrFail();
+    return view('projects.show', compact('project'));
+})->name('public.projects.show');
 
 Route::get('/blog/{slug}', function (string $slug) {
     $post = \App\Models\Post::where('slug', $slug)->where('is_published', true)->firstOrFail();
@@ -34,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('admin/posts', \App\Http\Controllers\PostController::class);
+    Route::resource('admin/projects', \App\Http\Controllers\ProjectController::class);
     Route::resource('admin/galleries', \App\Http\Controllers\GalleryController::class);
     Route::resource('admin/pages', \App\Http\Controllers\PageController::class);
     Route::resource('admin/navigations', \App\Http\Controllers\NavigationController::class);
