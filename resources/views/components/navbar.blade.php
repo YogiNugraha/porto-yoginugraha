@@ -1,8 +1,16 @@
 {{-- Sticky Navigation Bar --}}
 <nav class="navbar" id="navbar">
     <div class="container">
+        @php
+            $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
+        @endphp
         <a href="#hero" class="navbar-brand">
-            <img src="{{ asset('images/logo.png') }}" alt="Yogi Nugraha Logo"> Yogi Nugraha
+            @if(isset($settings['logo']) && $settings['logo'])
+                <img src="{{ asset('storage/' . $settings['logo']) }}" alt="{{ $settings['logo_title'] ?? 'Logo' }}"> 
+            @else
+                <img src="{{ asset('images/logo.png') }}" alt="{{ $settings['logo_title'] ?? 'Yogi Nugraha' }}"> 
+            @endif
+            {{ $settings['logo_title'] ?? 'Yogi Nugraha' }}
         </a>
 
         @php

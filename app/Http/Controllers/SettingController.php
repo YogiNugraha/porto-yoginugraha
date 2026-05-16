@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,76 +10,61 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $settings = Setting::latest()->paginate(10);
+        // Fetch all settings and map them by key for the view
+        $settings = Setting::pluck('value', 'key')->toArray();
         return view('admin.settings.index', compact('settings'));
-    }
-
-    public function create()
-    {
-        return view('admin.settings.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'key' => 'required|string|unique:settings,key|max:255',
-            'type' => 'required|in:text,textarea,image,boolean',
-            'value' => 'nullable',
-        ]);
+        // Define fields we expect from the form
+        $fields = [
+            'hero_title' => 'text',
+            'hero_desc' => 'textarea',
+            'hero_location' => 'text',
+            'hero_stats_1_number' => 'text',
+            'hero_stats_1_label' => 'text',
+            'hero_stats_2_number' => 'text',
+            'hero_stats_2_label' => 'text',
+            'hero_stats_3_number' => 'text',
+            'hero_stats_3_label' => 'text',
+            'btn_konsultasi_text' => 'text',
+            'btn_konsultasi_link' => 'text',
+            'logo_title' => 'text',
+            'linkedin_url' => 'text',
+            'github_url' => 'text',
+            'email_address' => 'text',
+            'footer_copyright' => 'text',
+        ];
 
-        $data = $request->only(['key', 'type']);
-        
-        if ($request->type === 'image' && $request->hasFile('value')) {
-            $data['value'] = $request->file('value')->store('settings', 'public');
-        } else {
-            $data['value'] = $request->value;
-        }
-
-        Setting::create($data);
-
-        return redirect()->route('settings.index')->with('success', 'Setting created successfully.');
-    }
-
-    public function edit(Setting $setting)
-    {
-        return view('admin.settings.edit', compact('setting'));
-    }
-
-    public function update(Request $request, Setting $setting)
-    {
-        $request->validate([
-            'key' => 'required|string|max:255|unique:settings,key,' . $setting->id,
-            'type' => 'required|in:text,textarea,image,boolean',
-            'value' => 'nullable',
-        ]);
-
-        $data = $request->only(['key', 'type']);
-
-        if ($request->type === 'image') {
-            if ($request->hasFile('value')) {
-                if ($setting->value && $setting->type === 'image') {
-                    Storage::disk('public')->delete($setting->value);
-                }
-                $data['value'] = $request->file('value')->store('settings', 'public');
-            } else {
-                $data['value'] = $setting->value; // keep old image if not uploading new one
+        // Handle text fields
+        foreach ($fields as $key => $type) {
+            if ($request->has($key)) {
+                Setting::updateOrCreate(
+                    ['key' => $key],
+                    ['value' => $request->input($key), 'type' => $type]
+                );
             }
-        } else {
-            $data['value'] = $request->value;
         }
 
-        $setting->update($data);
+        // Handle file uploads separately
+        $fileFields = ['logo', 'hero_image'];
+        foreach ($fileFields as $fileKey) {
+            if ($request->hasFile($fileKey)) {
+                // Delete old if exists
+                $oldSetting = Setting::where('key', $fileKey)->first();
+                if ($oldSetting && $oldSetting->value) {
+                    Storage::disk('public')->delete($oldSetting->value);
+                }
 
-        return redirect()->route('settings.index')->with('success', 'Setting updated successfully.');
-    }
-
-    public function destroy(Setting $setting)
-    {
-        if ($setting->type === 'image' && $setting->value) {
-            Storage::disk('public')->delete($setting->value);
+                $path = $request->file($fileKey)->store('settings', 'public');
+                Setting::updateOrCreate(
+                    ['key' => $fileKey],
+                    ['value' => $path, 'type' => 'image']
+                );
+            }
         }
-        $setting->delete();
 
-        return redirect()->route('settings.index')->with('success', 'Setting deleted successfully.');
+        return redirect()->route('settings.index')->with('success', 'Settings updated successfully.');
     }
 }

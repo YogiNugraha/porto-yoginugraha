@@ -12,11 +12,10 @@
                     {{ $settings['hero_location'] ?? 'Cirebon - Jawa Barat' }}
                 </div>
                 <h1>
-                    {{ $settings['hero_name'] ?? 'Yogi Nugraha' }}<br>
-                    <span class="highlight">{{ $settings['hero_title'] ?? 'Web Developer' }}</span>
+                    {!! $settings['hero_title'] ?? 'Yogi Nugraha<br><span class="highlight">Web Developer</span>' !!}
                 </h1>
                 <p class="hero-sub">
-                    {{ $settings['hero_subtitle'] ?? 'Membangun solusi web modern yang berdampak — dari konsep hingga deployment. Fokus pada performa, skalabilitas, dan pengalaman pengguna yang luar biasa.' }}
+                    {{ $settings['hero_desc'] ?? 'Membangun solusi web modern yang berdampak — dari konsep hingga deployment. Fokus pada performa, skalabilitas, dan pengalaman pengguna yang luar biasa.' }}
                 </p>
                 <div class="hero-stats">
                     <div class="hero-stat">
@@ -32,17 +31,17 @@
                         <div class="label">{{ $settings['hero_stats_3_label'] ?? 'Years Experience' }}</div>
                     </div>
                 </div>
-                <a href="mailto:{{ $settings['hero_email'] ?? 'ynugraha278@gmail.com' }}" class="hero-cta">
+                <a href="{{ $settings['btn_konsultasi_link'] ?? 'mailto:ynugraha278@gmail.com' }}" class="hero-cta">
                     <i data-lucide="send" style="width:18px;height:18px"></i>
-                    Mulai Konsultasi
+                    {{ $settings['btn_konsultasi_text'] ?? 'Mulai Konsultasi' }}
                 </a>
             </div>
             <div class="hero-image">
                 <div class="hero-image-wrapper">
                     @if(isset($settings['hero_image']) && $settings['hero_image'])
-                        <img src="{{ asset('storage/' . $settings['hero_image']) }}" alt="{{ $settings['hero_name'] ?? 'Yogi Nugraha' }}">
+                        <img src="{{ asset('storage/' . $settings['hero_image']) }}" alt="Hero Image">
                     @else
-                        <img src="{{ asset('images/profile.JPG') }}" alt="{{ $settings['hero_name'] ?? 'Yogi Nugraha' }}">
+                        <img src="{{ asset('images/profile.JPG') }}" alt="Hero Image">
                     @endif
                     <div class="hero-image-decoration"></div>
                 </div>

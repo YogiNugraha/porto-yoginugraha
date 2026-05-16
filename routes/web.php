@@ -38,9 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('admin/posts', \App\Http\Controllers\PostController::class);
     Route::resource('admin/projects', \App\Http\Controllers\ProjectController::class);
     Route::resource('admin/galleries', \App\Http\Controllers\GalleryController::class);
-    Route::resource('admin/pages', \App\Http\Controllers\PageController::class);
     Route::resource('admin/navigations', \App\Http\Controllers\NavigationController::class);
-    Route::resource('admin/settings', \App\Http\Controllers\SettingController::class);
+    
+    Route::get('admin/settings', [\App\Http\Controllers\SettingController::class, 'index'])->name('settings.index');
+    Route::post('admin/settings', [\App\Http\Controllers\SettingController::class, 'store'])->name('settings.store');
 });
 
 require __DIR__.'/auth.php';

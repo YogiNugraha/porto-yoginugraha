@@ -20,31 +20,34 @@
         <div class="container">
             <div class="project-grid">
                 @forelse($projects as $project)
-                <a href="{{ $project->link ?? route('public.projects.show', $project->slug) }}" class="project-card fade-in" target="{{ $project->link ? '_blank' : '_self' }}">
-                    <div class="project-card-thumb">
-                        @if($project->image)
-                            <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
-                        @else
-                            <div class="project-card-thumb-placeholder">
-                                <i data-lucide="image" style="width:48px;height:48px"></i>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="project-card-body">
-                        <div class="project-card-meta">
-                            @if($project->category)
-                                <span class="badge" style="background:rgba(14,165,233,.12);color:var(--clr-primary)">{{ $project->category }}</span>
+                    <a href="{{ route('public.projects.show', $project->slug) }}" class="project-card fade-in">
+                        <div class="project-card-thumb">
+                            @if ($project->image)
+                                <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}">
+                            @else
+                                <div class="project-card-thumb-placeholder">
+                                    <i data-lucide="image" style="width:48px;height:48px"></i>
+                                </div>
                             @endif
-                            <div class="arrow">
-                                <i data-lucide="arrow-up-right" style="width:16px;height:16px"></i>
-                            </div>
                         </div>
-                        <h3>{{ $project->title }}</h3>
-                        <p>{{ Str::limit($project->description ?? strip_tags($project->content), 120) }}</p>
-                    </div>
-                </a>
+                        <div class="project-card-body">
+                            <div class="project-card-meta">
+                                @if ($project->category)
+                                    <span class="badge"
+                                        style="background:rgba(14,165,233,.12);color:var(--clr-primary)">{{ $project->category }}</span>
+                                @endif
+                                <div class="arrow">
+                                    <i data-lucide="arrow-up-right" style="width:16px;height:16px"></i>
+                                </div>
+                            </div>
+                            <h3>{{ $project->title }}</h3>
+                            <p>{{ Str::limit($project->description ?? strip_tags($project->content), 120) }}</p>
+                        </div>
+                    </a>
                 @empty
-                <p style="text-align: center; width: 100%; grid-column: 1 / -1; color: var(--text-muted); padding: 2rem;">Belum ada proyek yang ditambahkan.</p>
+                    <p
+                        style="text-align: center; width: 100%; grid-column: 1 / -1; color: var(--text-muted); padding: 2rem;">
+                        Belum ada proyek yang ditambahkan.</p>
                 @endforelse
             </div>
         </div>

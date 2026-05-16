@@ -1,14 +1,20 @@
 {{-- Footer (Laravel.com inspired) --}}
 <footer class="footer">
     <div class="container">
+        @php
+            $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
+        @endphp
         <div class="footer-grid">
             <div class="footer-brand">
                 <div class="footer-brand-header">
-                    <img src="{{ asset('images/logo.png') }}" alt="">
-                    <h3>{{ \App\Models\Setting::where('key', 'hero_name')->value('value') ?? 'Yogi Nugraha' }}</h3>
+                    @if(isset($settings['logo']) && $settings['logo'])
+                        <img src="{{ asset('storage/' . $settings['logo']) }}" alt=""> 
+                    @else
+                        <img src="{{ asset('images/logo.png') }}" alt=""> 
+                    @endif
+                    <h3>{{ $settings['logo_title'] ?? 'Yogi Nugraha' }}</h3>
                 </div>
-                <p>{{ \App\Models\Setting::where('key', 'hero_subtitle')->value('value') ?? 'Result-oriented Web Developer yang fokus membangun solusi digital modern, scalable, dan berdampak.' }}
-                </p>
+                <p>{{ $settings['hero_desc'] ?? 'Result-oriented Web Developer yang fokus membangun solusi digital modern, scalable, dan berdampak.' }}</p>
             </div>
 
             <div class="footer-col">
@@ -42,14 +48,14 @@
 
             <div class="footer-col">
                 <h4>Sosial</h4>
-                <a href="https://linkedin.com/in/yogi-nugraha" target="_blank">LinkedIn</a>
-                <a href="https://github.com/YogiNugraha" target="_blank">GitHub</a>
-                <a href="mailto:ynugraha278@gmail.com">Email</a>
+                <a href="{{ $settings['linkedin_url'] ?? 'https://linkedin.com/in/yogi-nugraha' }}" target="_blank">LinkedIn</a>
+                <a href="{{ $settings['github_url'] ?? 'https://github.com/YogiNugraha' }}" target="_blank">GitHub</a>
+                <a href="{{ isset($settings['email_address']) ? 'mailto:'.$settings['email_address'] : 'mailto:ynugraha278@gmail.com' }}">Email</a>
             </div>
         </div>
 
         <div class="footer-bottom">
-            &copy; {{ date('Y') }} Yogi Nugraha.
+            {{ $settings['footer_copyright'] ?? '© ' . date('Y') . ' Yogi Nugraha. All rights reserved.' }}
         </div>
     </div>
 </footer>
