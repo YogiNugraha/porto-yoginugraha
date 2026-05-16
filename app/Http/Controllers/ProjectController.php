@@ -40,6 +40,7 @@ class ProjectController extends Controller
         $data = $request->except(['image', '_token']);
         $data['slug'] = Str::slug($request->title) . '-' . time();
         $data['is_published'] = $request->has('is_published');
+        $data['is_starred'] = $request->has('is_starred');
         $data['order'] = $request->order ?? 0;
 
         if ($request->hasFile('image')) {
@@ -79,6 +80,7 @@ class ProjectController extends Controller
             $data['slug'] = Str::slug($request->title) . '-' . time();
         }
         $data['is_published'] = $request->has('is_published');
+        $data['is_starred'] = $request->has('is_starred');
         $data['order'] = $request->order ?? 0;
 
         if ($request->hasFile('image')) {

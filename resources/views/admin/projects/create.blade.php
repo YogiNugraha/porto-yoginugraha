@@ -75,9 +75,14 @@
                     @error('image') <p class="mt-1 text-sm text-red-600 dark:text-red-500">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="flex items-center mb-6">
+                <div class="flex items-center mb-4">
                     <input id="is_published" type="checkbox" name="is_published" value="1" {{ old('is_published', true) ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                     <label for="is_published" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Publish Immediately</label>
+                </div>
+
+                <div class="flex items-center mb-6">
+                    <input id="is_starred" type="checkbox" name="is_starred" value="1" {{ old('is_starred') ? 'checked' : '' }} class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 rounded focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="is_starred" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Tampilkan di Pilihan Favorit (Beranda / Karya Section)</label>
                 </div>
 
                 <div class="flex items-center gap-4">

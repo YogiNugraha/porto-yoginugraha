@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('admin/posts', \App\Http\Controllers\PostController::class);
     Route::resource('admin/projects', \App\Http\Controllers\ProjectController::class);
+    Route::resource('admin/skills', \App\Http\Controllers\SkillController::class);
     Route::resource('admin/galleries', \App\Http\Controllers\GalleryController::class);
     Route::resource('admin/experiences', \App\Http\Controllers\ExperienceController::class);
     Route::resource('admin/navigations', \App\Http\Controllers\NavigationController::class);
