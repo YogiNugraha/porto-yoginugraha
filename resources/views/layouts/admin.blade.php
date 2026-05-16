@@ -11,10 +11,20 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600&display=swap" rel="stylesheet" />
 
+    <!-- Dark Mode FOUC Fix -->
+    <script>
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
-<body class="font-sans antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+<body x-data x-init="setTimeout(() => $el.classList.add('transition-colors', 'duration-200'), 50)" class="admin-panel font-sans antialiased bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
     <div class="flex h-screen overflow-hidden">
         
         <!-- Sidebar Backdrop -->
@@ -127,5 +137,33 @@
     <style>
         [x-cloak] { display: none !important; }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.querySelector('.wysiwyg-editor')) {
+                tinymce.init({
+                    selector: '.wysiwyg-editor',
+                    plugins: 'advlist autolink lists link image charmap preview anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking table emoticons template help',
+                    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                    height: 500,
+                    menubar: false,
+                    skin: localStorage.getItem('darkMode') === 'true' ? 'oxide-dark' : 'oxide',
+                    content_css: localStorage.getItem('darkMode') === 'true' ? 'dark' : 'default',
+                    setup: function(editor) {
+                        editor.on('change', function() {
+                            tinymce.triggerSave();
+                        });
+                    }
+                });
+
+                // Listen to AlpineJS dark mode toggle to update TinyMCE skin
+                window.addEventListener('storage', function(e) {
+                    if (e.key === 'darkMode') {
+                        location.reload(); // Simple reload to apply TinyMCE dark mode
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
